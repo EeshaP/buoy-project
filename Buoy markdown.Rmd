@@ -1,0 +1,273 @@
+---
+title: "Buoy Project - West Coast of Africa"
+subtitle: "MA615 Fall 2017"
+authors: "Eesha Pendharkar, Julia Pan, Homer Intharacha"
+output: pdf_document
+---
+
+```{r, echo=FALSE,warning=FALSE,message=FALSE}
+
+library(ggplot2)
+```
+
+
+
+
+# Buoy Project - West Coast of Africa
+
+
+##Introduction
+In this project, we compiled and perfomed EDA on air and sea surface temperature data collected by ships off of the West Coast of Africa. The majority of our data did not fit the requirements of time, since it was not recorded within  hours of noon (local time)
+
+We did do some analysis with the data that was available and saw some trends. Unfortunately, the verification of the trends is going to be hard given the inconsistencies in the data. 
+
+
+##Exploratory Data Analysis 
+
+We looked at air temperature and see temperature data from 2001 to 2017 collected near the West coast of Africa by ships.There is significantly less information available before 2004.
+Before we plot, let's look at what region we're plotting and the individual locations where the data was collected. 
+
+Here's all the locations from where data was collected for 17 years.There's too many data points to present a clear picture, so let's look at data collection locations specific to a year.
+
+
+
+
+
+
+![Map of ship locations 2001-2017](buoyall.png)
+
+
+
+
+
+
+
+
+
+
+
+![Map of ship locations 2001](buoy2001.png)
+
+
+
+
+
+
+
+
+![Map of ship locations 2004](buoy2004.png)
+
+
+
+
+
+
+![Map of ship locations 2007](buoy2007.png)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+![Map of ship locations 2010](2010.png)
+
+
+
+
+![Map of ship locations 2014](buoy2014.png)
+
+
+
+![Map of ship locations 2017](buoy2017.png)
+
+
+
+
+
+
+
+
+
+#Plotting
+
+Now that we know where our data came from, let's make some plots to see what trends we can spot.
+First of all, let's see temperature varies per month in a particular year
+Taking 2001 as our example,
+
+
+```{r, echo=FALSE,warning=FALSE,message=FALSE}
+library(readr)
+buoy2001_1_ <- read_csv("~/Desktop/buoy project/buoy project/buoy2001 (1).csv")
+
+ ggplot(data = buoy2001_1_) +
+   geom_point(mapping = aes(x = factor(MO), y = AT, color = MO)) + scale_x_discrete(labels = c("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"))+
+  xlab("Months")+
+  ylab("Air Temperature, Celsius")+
+  ggtitle("Air Temperature by Month, 2004")
+
+  
+ 
+
+
+```
+As we can see, there isn't enough data from 2001 to see any trends.
+
+
+
+```{r, echo=FALSE,warning=FALSE,message=FALSE}
+
+library(readr)
+buoy2004 <- read_csv("~/Desktop/buoy project/buoy project/buoy2004.csv")
+
+
+
+```
+
+```{r,echo=FALSE, warning=FALSE,message=FALSE}
+ ggplot(data = buoy2004) +
+   geom_point(mapping = aes(x = factor(MO), y = AT, color = AT)) +
+    
+ 
+  scale_x_discrete(labels = c("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"))+
+  xlab("Months")+
+  ylab("Air Temperature, Celsius")+
+  ggtitle("Air Temperature by Month, 2004")
+
+
+```
+
+
+
+
+```{r,echo=FALSE, warning=FALSE,message=FALSE}
+  
+ ggplot(data = buoy2004) +
+   geom_smooth(mapping = aes(x = MO, y = SST, color = AT))+  
+     geom_smooth(mapping = aes(x = MO, y = AT), color = "dark green")+
+  xlab("Months")+
+  ylab("Air Temperature, Celsius")+
+  ggtitle("Comparison of Air Temperature and Sea Temperature, 2004")
+
+
+
+
+```
+
+The sea surface temperature (blue) is consistently higher than air temperatures (green) throughout the year.
+
+
+
+Now let's look at 2017 data to see if newer data follows these trends too.
+
+```{r,echo=FALSE,warning=FALSE,message=FALSE }
+
+
+
+
+library(readr)
+buoy2017 <- read_csv("~/Desktop/buoy project/buoy project/buoy2017.csv")
+
+```
+
+
+
+```{r,echo=FALSE ,warning=FALSE,message=FALSE}
+
+ ggplot(data = buoy2017) +
+   geom_point(mapping = aes(x = factor(MO), y = SST, color = AT)) +
+    
+ 
+  scale_x_discrete(labels = c("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"))+
+  xlab("Months")+
+  ylab("Air Temperature, Celsius")+
+  ggtitle("Air Temperature by Month, 2017")+
+  ylim(10,35)
+
+
+
+```
+
+Here we see results similar to 2004, but more populated. 
+
+
+Let's look at Air Temp compared to Sea Surface Temp
+
+
+
+```{r,echo=FALSE,warning=FALSE,message=FALSE }
+  
+ ggplot(data = buoy2017) +
+   geom_smooth(mapping = aes(x = MO, y = SST, color = AT))+  
+     geom_smooth(mapping = aes(x = MO, y = AT), color = "dark green")+
+  xlab("Months")+
+  ylab("Air Temperature, Celsius")+
+  ggtitle("Comparison of Air Temperature and Sea Temperature, 2017")
+
+
+
+
+
+```
+We see here that Air Temperature (green) is still lower than Sea Temperature (blue), but the difference increases during the later months. 
+
+
+```{r,echo=FALSE,warning=FALSE,message=FALSE }
+library(readr)
+buoy_all <- read_csv("buoy_all.csv")
+
+
+
+
+```
+
+
+```{r,echo=FALSE,warning=FALSE,message=FALSE }
+
+ggplot(data = buoy_all) +
+  geom_point (mapping = aes(x = YR, y = air_temp, color = factor(MO))) + 
+  ylim(5,40) +
+ xlab("Year")+
+  ylab("Air Temperature, Celsius")+
+  ggtitle("Air Temperatures over 17 year")
+
+
+```
+
+This plot shows the spread of air temperature over the years 2001-2017. The colors of these data points corresponds to the months of the year as indicated on the legend. Though the color distribution varies from year to year, we can see that, in general, the average air temperature in a year occurs in November and December (pink). We see air temperature spiking in April-June (green) as well. 
+
+Next, we will plot the average temperature in one month - August - from 2001-2017. 
+
+```{r,echo=FALSE,warning=FALSE,message=FALSE}
+
+library(readr)
+yearavg <- read_csv("yearavg - Sheet1.csv")
+colnames(yearavg) <- c("Year","Avg AT")
+
+```
+
+```{r,echo=FALSE,warning=FALSE,message=FALSE }
+
+ggplot(data = yearavg) +
+  geom_smooth(mapping= aes(x= Year, y = `Avg AT`)) +
+   xlab("Year")+
+  ylab("Air Temperature, Celsius")+
+  ggtitle(" Average Air Temperatures in August over 17 year")
+
+
+```
+We can't observe any significant increase or decrease over the years in August. This result might not be the most efficient way of measuring climate change since very little data was available in the earlier years (2001-2004) and taking the average for the month of August didn't mean that we averaged 31 values. In some years, it was fewer than 5 days measured and some years where every day was measured.
+
+We can see some definite trends from this EDA like Air temperatures were consistently lower than sea surface temperatures, but most of this data being inconsistent has been an obstacle and prevents us from making decisive and meaningful conclusions. 
+
